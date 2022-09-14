@@ -13,8 +13,8 @@ const CHAIN_ID = 2000
 
 // Pool 0, Kiwi / Kiwi is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
-const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.BNB)
-const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.BNB)
+const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.WDOGE)
+const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.WDOGE)
 const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
 const web3 = getWeb3()
 const masterChefContract = new web3.eth.Contract((masterChefABI as unknown) as AbiItem, getMasterChefAddress())

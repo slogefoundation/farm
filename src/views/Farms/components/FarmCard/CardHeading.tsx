@@ -32,15 +32,10 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 }) => {
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
-      <Image src={`/images/farms/${farmImage}.png`} alt={tokenSymbol} width={80} height={40} />
-      <Flex flexDirection="column" alignItems="flex-end">
-        <Heading mb="4px">{lpLabel}</Heading>
-        <Flex justifyContent="center">
-          {depositFee === 0 ? <NoFeeTag /> : null}
-          {/* {isCommunityFarm ? <CommunityTag /> : <CoreTag />} */}
-          <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-        </Flex>
-      </Flex>
+      <Heading style={{ fontSize: '17px' }} mb="4px">
+        {lpLabel}
+      </Heading>
+      <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
     </Wrapper>
   )
 }

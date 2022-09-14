@@ -43,13 +43,7 @@ const App: React.FC = () => {
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/farms">
               <Farms />
-            </Route>
-            <Route path="/pools">
-              <Pools />
             </Route>
             {/* 404 */}
             <Route component={NotFound} />

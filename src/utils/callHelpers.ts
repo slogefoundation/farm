@@ -98,14 +98,14 @@ export const harvest = async (masterChefContract, pid, account) => {
   if (pid === 0) {
     return masterChefContract.methods
       .leaveStaking('0')
-      .send({ from: account })
+      .send({ from: account, gas: 200000 })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
   }
   return masterChefContract.methods
     .deposit(pid, '0')
-    .send({ from: account })
+    .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })

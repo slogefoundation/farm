@@ -41,11 +41,11 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalan
       <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
     ) : (
       <IconButtonWrapper>
-        <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
-          <MinusIcon color="primary" />
+        <IconButton style={{width:"120px"}} variant="tertiary" onClick={onPresentWithdraw} mr="6px">
+          Withdraw
         </IconButton>
-        <IconButton variant="tertiary" onClick={onPresentDeposit}>
-          <AddIcon color="primary" />
+        <IconButton style={{width:"120px"}} variant="tertiary" onClick={onPresentDeposit}>
+          Deposit
         </IconButton>
       </IconButtonWrapper>
     )
@@ -53,7 +53,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalan
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Heading color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+      {/* <Heading color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading> */}
       {renderStakingButtons()}
     </Flex>
   )

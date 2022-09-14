@@ -11,8 +11,13 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Kanit',sans-serif;
   }
+
+  .gMxwKD, .hJyVuu, .fDCRVA, .biqVeO{
+    display:none !important;
+  }
+
   body {
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: transparent;
 
     img {
       height: auto;

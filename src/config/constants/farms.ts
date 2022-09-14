@@ -1,9 +1,24 @@
 import contracts from './contracts'
 import { FarmConfig, QuoteToken } from './types'
 
-const farms: FarmConfig[] = [     
+const farms: FarmConfig[] = [
   {
-    pid: 2,
+    pid: 0,
+    lpSymbol: 'SLOGE',
+    lpAddresses: {
+      97: '',
+      2000: '0x2D6794DeB4A4C622DC318Aa5C1bA983CBC83e957',
+    },
+    tokenSymbol: 'SLOGE',
+    tokenAddresses: {
+      97: '',
+      2000: '0x2D6794DeB4A4C622DC318Aa5C1bA983CBC83e957',
+    },
+    quoteTokenSymbol: QuoteToken.SLOGE,
+    quoteTokenAdresses: contracts.sloge,
+  },
+  {
+    pid: 3,
     lpSymbol: 'REDROCKET-WDOGE LP',
     lpAddresses: {
       97: '',
@@ -14,11 +29,46 @@ const farms: FarmConfig[] = [
     tokenAddresses: {
       97: '',
       2000: contracts.redrocket[2000],
-      
+
     },
     quoteTokenSymbol: QuoteToken.REDROCKET,
     quoteTokenAdresses: contracts.redrocket,
   },
+  {
+    pid: 4,
+    lpSymbol: 'USDC-WDOGE LP',
+    lpAddresses: {
+      97: '',
+      2000: '0xcbB6c82511Ed2B6BB51886bF072e11068e256A60',// V1
+      // 2000: '0x314a47938e567E90813816589b7C15E85D053A6a' // V2
+    },
+    tokenSymbol: 'USDC',
+    tokenAddresses: {
+      97: '',
+      2000: contracts.usdc[2000],
+
+    },
+    quoteTokenSymbol: QuoteToken.WDOGE,
+    quoteTokenAdresses: contracts.wdoge,
+  }
+  // ,
+  // {
+  //   pid: 5,
+  //   lpSymbol: 'SLOGE-WDOGE LP',
+  //   lpAddresses: {
+  //     97: '',
+  //     2000: '0x1Dc776555150D40A055Bc986a5E12Cf888987809',// V1
+  //     // 2000: '0x314a47938e567E90813816589b7C15E85D053A6a' // V2
+  //   },
+  //   tokenSymbol: 'SLOGE',
+  //   tokenAddresses: {
+  //     97: '',
+  //     2000: contracts.sloge[2000],
+
+  //   },
+  //   quoteTokenSymbol: QuoteToken.WDOGE,
+  //   quoteTokenAdresses: contracts.wdoge,
+  // },
   // {
   //   pid: 3,
   //   lpSymbol: 'WDEFI-BUSD LP',
@@ -97,7 +147,7 @@ const farms: FarmConfig[] = [
   //   tokenAddresses: {
   //     97: '',
   //     2000: '0x8b303d5bbfbbf46f1a4d9741e491e06986894e18',
-      
+
   //   },
   //   quoteTokenSymbol: QuoteToken.BUSD,
   //   quoteTokenAdresses: contracts.busd,
@@ -168,54 +218,54 @@ const farms: FarmConfig[] = [
   //   quoteTokenSymbol: QuoteToken.BNB,
   //   quoteTokenAdresses: contracts.wbnb,
   // },
-//   {
-//    pid: 3,
-//    lpSymbol: 'KIWI-USDT LP',
-//    lpAddresses: {
-//      97: '',
-//      2000: '0xab2c09F73FB62B033C6B5CfDb929C422033B0619',
-//    },
-//    tokenSymbol: 'KIWI',
-//    tokenAddresses: {
-//      97: '',
-//      2000: '0xCfDf8A80fECAeeCC144fa74c0Df8691BFd0e26e3',
-//    },
-//    quoteTokenSymbol: QuoteToken.USDT,
-//    quoteTokenAdresses: contracts.usdt,
-//    isCommunity: false,
-//  },
-//  {
-//   pid: 4,
-//   lpSymbol: 'KIWI-USDC LP',
-//   lpAddresses: {
-//     97: '',
-//     2000: '0xaC8532CD60CF37440e00c86c0EFDe31C1Dbcf099',
-//   },
-//   tokenSymbol: 'KIWI',
-//   tokenAddresses: {
-//     97: '',
-//     2000: '0xCfDf8A80fECAeeCC144fa74c0Df8691BFd0e26e3',
-//   },
-//   quoteTokenSymbol: QuoteToken.USDC,
-//   quoteTokenAdresses: contracts.usdc,
-//   isCommunity: false,
-// },
-// {
-//     pid: 6,
-//     lpSymbol: 'KIWI-CHS LP',
-//     lpAddresses: {
-//       97: '',
-//       2000: '0xF5Cfb60d7265f423736cF69b20953AC745d8d223',
-//     },
-//     tokenSymbol: 'KIWI',
-//     tokenAddresses: {
-//       97: '',
-//       2000: '0xCfDf8A80fECAeeCC144fa74c0Df8691BFd0e26e3',
-//     },
-//     quoteTokenSymbol: QuoteToken.CHS,
-//     quoteTokenAdresses: contracts.chs,
-//   },
-  
+  //   {
+  //    pid: 3,
+  //    lpSymbol: 'KIWI-USDT LP',
+  //    lpAddresses: {
+  //      97: '',
+  //      2000: '0xab2c09F73FB62B033C6B5CfDb929C422033B0619',
+  //    },
+  //    tokenSymbol: 'KIWI',
+  //    tokenAddresses: {
+  //      97: '',
+  //      2000: '0xCfDf8A80fECAeeCC144fa74c0Df8691BFd0e26e3',
+  //    },
+  //    quoteTokenSymbol: QuoteToken.USDT,
+  //    quoteTokenAdresses: contracts.usdt,
+  //    isCommunity: false,
+  //  },
+  //  {
+  //   pid: 4,
+  //   lpSymbol: 'KIWI-USDC LP',
+  //   lpAddresses: {
+  //     97: '',
+  //     2000: '0xaC8532CD60CF37440e00c86c0EFDe31C1Dbcf099',
+  //   },
+  //   tokenSymbol: 'KIWI',
+  //   tokenAddresses: {
+  //     97: '',
+  //     2000: '0xCfDf8A80fECAeeCC144fa74c0Df8691BFd0e26e3',
+  //   },
+  //   quoteTokenSymbol: QuoteToken.USDC,
+  //   quoteTokenAdresses: contracts.usdc,
+  //   isCommunity: false,
+  // },
+  // {
+  //     pid: 6,
+  //     lpSymbol: 'KIWI-CHS LP',
+  //     lpAddresses: {
+  //       97: '',
+  //       2000: '0xF5Cfb60d7265f423736cF69b20953AC745d8d223',
+  //     },
+  //     tokenSymbol: 'KIWI',
+  //     tokenAddresses: {
+  //       97: '',
+  //       2000: '0xCfDf8A80fECAeeCC144fa74c0Df8691BFd0e26e3',
+  //     },
+  //     quoteTokenSymbol: QuoteToken.CHS,
+  //     quoteTokenAdresses: contracts.chs,
+  //   },
+
 
 ]
 

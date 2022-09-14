@@ -8,102 +8,108 @@ import farmsConfig from 'config/constants/farms'
 const CHAIN_ID = 2000
 
 const fetchFarms = async () => {
-  const data = await Promise.all(
-    farmsConfig.map(async (farmConfig) => {
-      const lpAdress = farmConfig.lpAddresses[CHAIN_ID]
-      const calls = [
-        // Balance of token in the LP contract
-        {
-          address: farmConfig.tokenAddresses[CHAIN_ID],
-          name: 'balanceOf',
-          params: [lpAdress],
-        },
-        // Balance of quote token on LP contract
-        {
-          address: farmConfig.quoteTokenAdresses[CHAIN_ID],
-          name: 'balanceOf',
-          params: [lpAdress],
-        },
-        // Balance of LP tokens in the master chef contract
-        {
-          address: lpAdress,
-          name: 'balanceOf',
-          params: [getMasterChefAddress()],
-        },
-        // Total supply of LP tokens
-        {
-          address: lpAdress,
-          name: 'totalSupply',
-        },
-        // Token decimals
-        {
-          address: farmConfig.tokenAddresses[CHAIN_ID],
-          name: 'decimals',
-        },
-        // Quote token decimals
-        {
-          address: farmConfig.quoteTokenAdresses[CHAIN_ID],
-          name: 'decimals',
-        },
-      ]
 
-      const [
-        tokenBalanceLP,
-        quoteTokenBlanceLP,
-        lpTokenBalanceMC,
-        lpTotalSupply,
-        tokenDecimals,
-        quoteTokenDecimals,
-      ] = await multicall(erc20, calls)
+  try {
+    const data = await Promise.all(
+      farmsConfig.map(async (farmConfig) => {
+        const lpAdress = farmConfig.lpAddresses[CHAIN_ID]
+        const calls = [
+          // Balance of token in the LP contract
+          {
+            address: farmConfig.tokenAddresses[CHAIN_ID],
+            name: 'balanceOf',
+            params: [lpAdress],
+          },
+          // Balance of quote token on LP contract
+          {
+            address: farmConfig.quoteTokenAdresses[CHAIN_ID],
+            name: 'balanceOf',
+            params: [lpAdress],
+          },
+          // Balance of LP tokens in the master chef contract
+          {
+            address: lpAdress,
+            name: 'balanceOf',
+            params: [getMasterChefAddress()],
+          },
+          // Total supply of LP tokens
+          {
+            address: lpAdress,
+            name: 'totalSupply',
+          },
+          // Token decimals
+          {
+            address: farmConfig.tokenAddresses[CHAIN_ID],
+            name: 'decimals',
+          },
+          // Quote token decimals
+          {
+            address: farmConfig.quoteTokenAdresses[CHAIN_ID],
+            name: 'decimals',
+          },
+        ]
 
-      // Ratio in % a LP tokens that are in staking, vs the total number in circulation
-      const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+        const [
+          tokenBalanceLP,
+          quoteTokenBlanceLP,
+          lpTokenBalanceMC,
+          lpTotalSupply,
+          tokenDecimals,
+          quoteTokenDecimals,
+        ] = await multicall(erc20, calls)
 
-      // Total value in staking in quote token value
-      const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(18))
-        .times(new BigNumber(2))
-        .times(lpTokenRatio)
+        // Ratio in % a LP tokens that are in staking, vs the total number in circulation
+        const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
 
-      // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
-      const tokenAmount = new BigNumber(tokenBalanceLP).div(new BigNumber(10).pow(tokenDecimals)).times(lpTokenRatio)
-      const quoteTokenAmount = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(quoteTokenDecimals))
-        .times(lpTokenRatio)
+        // Total value in staking in quote token value
+        const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
+          .div(new BigNumber(10).pow(18))
+          .times(new BigNumber(2))
+          .times(lpTokenRatio)
 
-      const [info, totalAllocPoint, cakePerBlock] = await multicall(masterchefABI, [
-        {
-          address: getMasterChefAddress(),
-          name: 'poolInfo',
-          params: [farmConfig.pid],
-        },
-        {
-          address: getMasterChefAddress(),
-          name: 'totalAllocPoint',
-        },
-        {
-          address: getMasterChefAddress(),
-          name: 'cakePerBlock',
-        },
-      ])
+        // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
+        const tokenAmount = new BigNumber(tokenBalanceLP).div(new BigNumber(10).pow(tokenDecimals)).times(lpTokenRatio)
+        const quoteTokenAmount = new BigNumber(quoteTokenBlanceLP)
+          .div(new BigNumber(10).pow(quoteTokenDecimals))
+          .times(lpTokenRatio)
 
-      const allocPoint = new BigNumber(info.allocPoint._hex)
-      const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
+        const [info, totalAllocPoint, cakePerBlock] = await multicall(masterchefABI, [
+          {
+            address: getMasterChefAddress(),
+            name: 'poolInfo',
+            params: [farmConfig.pid],
+          },
+          {
+            address: getMasterChefAddress(),
+            name: 'totalAllocPoint',
+          },
+          {
+            address: getMasterChefAddress(),
+            name: 'cakePerBlock',
+          },
+        ])
 
-      return {
-        ...farmConfig,
-        tokenAmount: tokenAmount.toJSON(),
-        quoteTokenAmount: quoteTokenAmount.toJSON(),
-        lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
-        tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
-        poolWeight: poolWeight.toJSON(),
-        multiplier: `${allocPoint.div(100).toString()}X`,
-        depositFeeBP: info.depositFeeBP,
-        cakePerBlock: new BigNumber(cakePerBlock).toNumber(),
-      }
-    }),
-  )
-  return data
+        const allocPoint = new BigNumber(info.allocPoint._hex)
+        const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
+
+        return {
+          ...farmConfig,
+          tokenAmount: tokenAmount.toJSON(),
+          quoteTokenAmount: quoteTokenAmount.toJSON(),
+          lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
+          tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
+          poolWeight: poolWeight.toJSON(),
+          multiplier: `${ allocPoint.div(100).toString() }X`,
+          depositFeeBP: info.depositFeeBP,
+          cakePerBlock: new BigNumber(cakePerBlock).toNumber(),
+        }
+      }),
+    )
+    
+    return data
+  } catch (err) {
+    return null;
+  }
 }
 
 export default fetchFarms

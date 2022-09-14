@@ -128,10 +128,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
     if (!farm.lpTotalInQuoteToken) {
       return null
     }
-    if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+    if (farm.quoteTokenSymbol === QuoteToken.WDOGE) {
       return bnbPrice.times(farm.lpTotalInQuoteToken)
     }
-    if (farm.quoteTokenSymbol === QuoteToken.KIWI) {
+    if (farm.quoteTokenSymbol === QuoteToken.SLOGE) {
       return kiwiPrice.times(farm.lpTotalInQuoteToken)
     }
     return farm.lpTotalInQuoteToken
@@ -143,7 +143,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 
   return (
     <FCard>
-      {farm.tokenSymbol === 'KIWI' && <StyledCardAccent />}
+      {farm.tokenSymbol === 'SLOGE' && <StyledCardAccent />}
       <CardImage>
         <Flex flexDirection="column" alignItems="flex-start">
           <Multiplier>{farm.multiplier}</Multiplier>

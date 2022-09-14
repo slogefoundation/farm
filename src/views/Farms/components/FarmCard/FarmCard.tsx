@@ -104,7 +104,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, kiwiPrice, bnbPrice,
     if (!farm.lpTotalInQuoteToken) {
       return null
     }
-    if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+    if (farm.quoteTokenSymbol === QuoteToken.WDOGE) {
       return bnbPrice.times(farm.lpTotalInQuoteToken)
     }
     return farm.lpTotalInQuoteToken
@@ -114,12 +114,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, kiwiPrice, bnbPrice,
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
     : '-'
 
-  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('SLOGE', '')
+  const lpLabel = farm.lpSymbol && farm.lpSymbol
   const earnLabel = farm.dual ? farm.dual.earnLabel : 'SLOGE'
   const farmAPY = farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
-  console.log(farm.depositFeeBP)
   return (
     <FCard>
       {farm.tokenSymbol === 'SLOGE' && <StyledCardAccent />}
@@ -137,14 +136,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, kiwiPrice, bnbPrice,
           <Text bold style={{ display: 'flex', alignItems: 'center' }}>
             {farm.apy ? (
               <>
-                <ApyButton
-                  lpLabel={lpLabel}
-                  quoteTokenAdresses={quoteTokenAdresses}
-                  quoteTokenSymbol={quoteTokenSymbol}
-                  tokenAddresses={tokenAddresses}
-                  kiwiPrice={kiwiPrice}
-                  apy={farm.apy}
-                />
                 {farmAPY}%
               </>
             ) : (
@@ -157,29 +148,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, kiwiPrice, bnbPrice,
         <Text>{TranslateString(318, 'Earn')}:</Text>
         <Text bold>{earnLabel}</Text>
       </Flex>
-      <Flex justifyContent="space-between">
-        <Text style={{ fontSize: '24px' }}>{TranslateString(10001, 'Deposit Fee')}:</Text>
-        <Text bold style={{ fontSize: '24px' }}>
-          {farm.depositFeeBP / 100}%
-        </Text>
-      </Flex>
       <CardActionsContainer farm={farm} ethereum={ethereum} account={account} />
-      <Divider />
-      <ExpandableSectionButton
-        onClick={() => setShowExpandableSection(!showExpandableSection)}
-        expanded={showExpandableSection}
-      />
-      <ExpandingWrapper expanded={showExpandableSection}>
-        <DetailsSection
-          removed={removed}
-          bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[2000]}`}
-          totalValueFormated={totalValueFormated}
-          lpLabel={lpLabel}
-          quoteTokenAdresses={quoteTokenAdresses}
-          quoteTokenSymbol={quoteTokenSymbol}
-          tokenAddresses={tokenAddresses}
-        />
-      </ExpandingWrapper>
     </FCard>
   )
 }
